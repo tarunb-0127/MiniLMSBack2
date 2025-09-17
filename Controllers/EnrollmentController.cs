@@ -114,7 +114,7 @@ namespace MiniLMS.Controllers
             if (User.IsInRole("Learner") && enrollment.LearnerId != learnerId)
                 return Forbid();
 
-            // 1️⃣ Delete ModuleProgress for this learner in this course
+            // Delete ModuleProgress for this learner in this course
             var moduleProgresses = await _db.Moduleprogresses
                 .Include(mp => mp.Module)
                 .Where(mp =>
@@ -123,7 +123,7 @@ namespace MiniLMS.Controllers
                 .ToListAsync();
             _db.Moduleprogresses.RemoveRange(moduleProgresses);
 
-            // 2️⃣ Delete Feedbacks for this learner in this course
+            // Delete Feedbacks for this learner in this course
             var feedbacks = await _db.Feedbacks
                 .Where(f =>
                     f.LearnerId == enrollment.LearnerId &&
@@ -131,7 +131,7 @@ namespace MiniLMS.Controllers
                 .ToListAsync();
             _db.Feedbacks.RemoveRange(feedbacks);
 
-            // 3️⃣ Delete the enrollment
+            // Delete the enrollment
             _db.Enrollments.Remove(enrollment);
 
             await _db.SaveChangesAsync();
