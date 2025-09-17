@@ -72,12 +72,12 @@ namespace Mini_LMS.Services
 
                 _logger.LogInformation("Sending OTP email to {Email}", toEmail);
                 await client.SendMailAsync(message);
-                _logger.LogInformation("✅ OTP email sent to {Email}", toEmail);
+                _logger.LogInformation("OTP email sent to {Email}", toEmail);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Failed to send OTP email to {Email}", toEmail);
+                _logger.LogError(ex, "Failed to send OTP email to {Email}", toEmail);
                 return false;
             }
         }
@@ -95,12 +95,12 @@ namespace Mini_LMS.Services
 
                 _logger.LogInformation("Sending password reset email to {Email}", toEmail);
                 await client.SendMailAsync(message);
-                _logger.LogInformation("✅ Password reset email sent to {Email}", toEmail);
+                _logger.LogInformation("Password reset email sent to {Email}", toEmail);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Failed to send password reset email to {Email}", toEmail);
+                _logger.LogError(ex, "Failed to send password reset email to {Email}", toEmail);
                 return false;
             }
         }
@@ -113,18 +113,18 @@ namespace Mini_LMS.Services
                 var client = CreateSmtpClient();
                 var message = CreateMessage(
                     trainerEmail,
-                    "✅ Course Approved",
+                    "Course Approved",
                     $"Your course '{courseName}' has been added successfully and is now live."
                 );
 
                 _logger.LogInformation("Sending course approval email to {Email}", trainerEmail);
                 await client.SendMailAsync(message);
-                _logger.LogInformation("✅ Course approval email sent to {Email}", trainerEmail);
+                _logger.LogInformation("Course approval email sent to {Email}", trainerEmail);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Failed to send course approval email to {Email}", trainerEmail);
+                _logger.LogError(ex, "Failed to send course approval email to {Email}", trainerEmail);
                 return false;
             }
         }
@@ -136,18 +136,18 @@ namespace Mini_LMS.Services
                 var client = CreateSmtpClient();
                 var message = CreateMessage(
                     trainerEmail,
-                    "✏️ Course Updated",
+                    "Course Updated",
                     $"Your course '{courseName}' has been updated successfully."
                 );
 
                 _logger.LogInformation("Sending course update email to {Email}", trainerEmail);
                 await client.SendMailAsync(message);
-                _logger.LogInformation("✅ Course update email sent to {Email}", trainerEmail);
+                _logger.LogInformation("Course update email sent to {Email}", trainerEmail);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Failed to send course update email to {Email}", trainerEmail);
+                _logger.LogError(ex, "ailed to send course update email to {Email}", trainerEmail);
                 return false;
             }
         }
@@ -159,18 +159,18 @@ namespace Mini_LMS.Services
                 var client = CreateSmtpClient();
                 var message = CreateMessage(
                     adminEmail,
-                    "🚫 Course Takedown Request",
+                    "Course Takedown Request",
                     $"Trainer '{trainerEmail}' has requested to remove the course '{courseName}'."
                 );
 
                 _logger.LogInformation("Sending takedown request email to admin {Email}", adminEmail);
                 await client.SendMailAsync(message);
-                _logger.LogInformation("✅ Takedown request email sent to admin {Email}", adminEmail);
+                _logger.LogInformation("Takedown request email sent to admin {Email}", adminEmail);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Failed to send takedown request email to admin {Email}", adminEmail);
+                _logger.LogError(ex, "Failed to send takedown request email to admin {Email}", adminEmail);
                 return false;
             }
         }
@@ -188,12 +188,12 @@ namespace Mini_LMS.Services
 
                 _logger.LogInformation("Sending feedback notification email to {Email}", trainerEmail);
                 await client.SendMailAsync(message);
-                _logger.LogInformation("✅ Feedback notification email sent to {Email}", trainerEmail);
+                _logger.LogInformation("Feedback notification email sent to {Email}", trainerEmail);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Failed to send feedback notification to {Email}", trainerEmail);
+                _logger.LogError(ex, "Failed to send feedback notification to {Email}", trainerEmail);
                 return false;
             }
         }
@@ -205,18 +205,18 @@ namespace Mini_LMS.Services
                 var client = CreateSmtpClient();
                 var message = CreateMessage(
                     learnerEmail,
-                    "🎯 New Course Available",
+                    "New Course Available",
                     $"Hello,\n\nA new course '{courseName}' is now available. Log in to MiniLMS to enroll!"
                 );
 
                 _logger.LogInformation("Sending new-course email to {Email}", learnerEmail);
                 await client.SendMailAsync(message);
-                _logger.LogInformation("✅ New-course email sent to {Email}", learnerEmail);
+                _logger.LogInformation("New-course email sent to {Email}", learnerEmail);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Failed to send new-course email to {Email}", learnerEmail);
+                _logger.LogError(ex, "Failed to send new-course email to {Email}", learnerEmail);
                 return false;
             }
         }

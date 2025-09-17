@@ -751,3 +751,4 @@ D:\RIX_2024\Micro Project\MP_Copy_1\Mini_LMS\Mini_LMS\obj\Debug\net8.0\refint\Mi
 D:\RIX_2024\Micro Project\MP_Copy_1\Mini_LMS\Mini_LMS\obj\Debug\net8.0\Mini_LMS.pdb
 D:\RIX_2024\Micro Project\MP_Copy_1\Mini_LMS\Mini_LMS\obj\Debug\net8.0\Mini_LMS.genruntimeconfig.cache
 D:\RIX_2024\Micro Project\MP_Copy_1\Mini_LMS\Mini_LMS\obj\Debug\net8.0\ref\Mini_LMS.dll
+D:\RIX_2024\Micro Project\MP_Copy_1\Mini_LMS\Mini_LMS\obj\Debug\net8.0\Mini_LMS.sourcelink.json

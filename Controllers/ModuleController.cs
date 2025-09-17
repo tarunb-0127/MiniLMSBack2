@@ -46,7 +46,7 @@ namespace Mini_LMS.Controllers
             return await _db.Users.SingleOrDefaultAsync(u => u.Email == email && u.Role == "Trainer");
         }
 
-        // 🔐 Create Module (Trainer only)
+        // Create Module (Trainer only)
         [Authorize(Roles = "Trainer")]
         [HttpPost("create")]
         public async Task<IActionResult> CreateModule([FromForm] ModuleCreateDto dto)
@@ -102,7 +102,7 @@ namespace Mini_LMS.Controllers
             return CreatedAtAction(nameof(GetModule), new { id = module.Id }, module);
         }
 
-        // 🔐 Update Module
+        //Update Module
         [Authorize(Roles = "Trainer")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateModule(int id, [FromForm] ModuleUpdateDto dto)
@@ -143,7 +143,7 @@ namespace Mini_LMS.Controllers
             return Ok(module);
         }
 
-        // 🔐 Delete Module
+        // Delete Module
         [Authorize(Roles = "Trainer")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteModule(int id)
@@ -158,7 +158,7 @@ namespace Mini_LMS.Controllers
             if (course == null || course.TrainerId != trainer.Id)
                 return Unauthorized("You can only delete modules in your own courses");
 
-            // Delete all related progress entries
+            //Delete all related progress entries
             var progresses = await _db.Moduleprogresses.Where(p => p.ModuleId == module.Id).ToListAsync();
             _db.Moduleprogresses.RemoveRange(progresses);
 
@@ -170,7 +170,7 @@ namespace Mini_LMS.Controllers
             return NoContent();
         }
 
-        // 👁️ Get single module
+        // Get single module
         [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetModule(int id)
@@ -182,7 +182,7 @@ namespace Mini_LMS.Controllers
             return Ok(module);
         }
 
-        // 👁️ Get all modules for a course with progress for current learner
+        // Get all modules for a course with progress for current learner
         [Authorize]
         [HttpGet("course/{courseId}")]
         public async Task<IActionResult> GetModulesByCourse(int courseId, [FromHeader] int learnerId)
@@ -191,7 +191,7 @@ namespace Mini_LMS.Controllers
                 .Where(m => m.CourseId == courseId)
                 .ToListAsync();
 
-            // Merge with progress
+            //Merge with progress
             var progresses = await _db.Moduleprogresses
                 .Where(p => p.LearnerId == learnerId && modules.Select(m => m.Id).Contains(p.ModuleId))
                 .ToListAsync();

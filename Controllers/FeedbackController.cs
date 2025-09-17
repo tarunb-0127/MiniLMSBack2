@@ -21,7 +21,7 @@ namespace Mini_LMS.Controllers
             _email = email;
         }
 
-        // ✅ Create course-level feedback
+        // Create course-level feedback
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] FeedbackCreateRequest req)
         {
@@ -44,7 +44,7 @@ namespace Mini_LMS.Controllers
             _db.Feedbacks.Add(feedback);
             await _db.SaveChangesAsync();
 
-            // Notify trainer
+            //Notify trainer
             var trainer = await _db.Users.FindAsync(course.TrainerId);
             if (trainer != null)
             {
@@ -69,7 +69,7 @@ namespace Mini_LMS.Controllers
             return CreatedAtAction(nameof(GetByCourse), new { courseId = req.CourseId }, feedback);
         }
 
-        // ✅ Get all feedback for a course
+        //Get all feedback for a course
         [HttpGet("course/{courseId}")]
         public async Task<IActionResult> GetByCourse(int courseId)
         {
@@ -80,7 +80,7 @@ namespace Mini_LMS.Controllers
             return Ok(list);
         }
 
-        // ✅ Get single feedback by ID
+        // Get single feedback by ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -93,7 +93,7 @@ namespace Mini_LMS.Controllers
             return Ok(feedback);
         }
 
-        // ✅ Update feedback (message or rating)
+        //Update feedback (message or rating)
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromForm] FeedbackUpdateRequest req)
         {
@@ -107,7 +107,7 @@ namespace Mini_LMS.Controllers
             return Ok(feedback);
         }
 
-        // ✅ Delete feedback
+        //Delete feedback
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -121,7 +121,7 @@ namespace Mini_LMS.Controllers
         }
     }
 
-    // ✅ DTOs for course-level feedback
+    //DTOs for course-level feedback
     public class FeedbackCreateRequest
     {
         public int LearnerId { get; set; }

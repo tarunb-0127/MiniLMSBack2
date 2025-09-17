@@ -30,7 +30,7 @@ namespace Mini_LMS.Controllers
             _logger = logger;
         }
 
-        // ─── DTOs ────────────────────────────────────────────────────────────────────
+       
 
         public class CourseCreateDTO
         {
@@ -46,7 +46,7 @@ namespace Mini_LMS.Controllers
             public string Reason { get; set; } = null!;
         }
 
-        // ─── Create a new course (Trainers only) ────────────────────────────────────
+       
 
         [Authorize(Roles = "Trainer")]
         [HttpPost("create")]
@@ -80,14 +80,14 @@ namespace Mini_LMS.Controllers
             _db.Courses.Add(course);
             await _db.SaveChangesAsync();
 
-            // 4️⃣ Notify all active learners
+            
             var learners = await _db.Users
                 .Where(u => u.Role == "Learner" && u.IsActive == true)
                 .ToListAsync();
 
             foreach (var learner in learners)
             {
-                // add notification (swallow any FK errors)
+               
                 _db.Notifications.Add(new Notification
                 {
                     UserId = learner.Id,
@@ -119,7 +119,7 @@ namespace Mini_LMS.Controllers
             return Ok(course);
         }
 
-        // ─── Get list of all courses (any authenticated user) ───────────────────────
+        
 
         [Authorize]
         [HttpGet("all")]
@@ -131,30 +131,30 @@ namespace Mini_LMS.Controllers
             return Ok(courses);
         }
 
-        // ─── Trainers can request a takedown ────────────────────────────────────────
+     
 
         [Authorize(Roles = "Trainer")]
         [HttpPost("request-takedown")]
         public async Task<IActionResult> RequestTakedown([FromBody] TakedownRequestDTO dto)
         {
-            // 1️⃣ Get trainer info from JWT
+            //Get trainer info from JWT
             var trainerEmail = User.FindFirst(ClaimTypes.Email)?.Value
                              ?? User.FindFirst("email")?.Value;
             if (string.IsNullOrEmpty(trainerEmail))
                 return Unauthorized(new { message = "Not authorized." });
 
-            // 2️⃣ Ensure course exists
+            // Ensure course exists
             var course = await _db.Courses.FindAsync(dto.CourseId);
             if (course == null)
                 return NotFound(new { message = "Course not found." });
 
-            // 3️⃣ Lookup the trainer's user record so we have a valid UserId FK
+            // Lookup the trainer's user record so we have a valid UserId FK
             var trainerUser = await _db.Users
                 .SingleOrDefaultAsync(u => u.Email == trainerEmail && u.Role == "Trainer");
             if (trainerUser == null)
                 return Unauthorized(new { message = "Trainer account not found." });
 
-            // 4️⃣ Always store a Notification with the trainer's own UserId
+            // Always store a Notification with the trainer's own UserId
             _db.Notifications.Add(new Notification
             {
                 UserId = trainerUser.Id,                        // ← use trainer.Id
@@ -177,8 +177,7 @@ namespace Mini_LMS.Controllers
         }
 
 
-        // ─── Get course by ID (any authenticated user) ─────────────────────────────
-
+       
         [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -195,7 +194,7 @@ namespace Mini_LMS.Controllers
 [HttpDelete("{id}")]
 public async Task<IActionResult> Delete(int id)
 {
-    // 1️⃣ Load the course with related modules
+    //Load the course with related modules
     var course = await _db.Courses
         .Include(c => c.Modules)
         .FirstOrDefaultAsync(c => c.Id == id);
@@ -203,56 +202,52 @@ public async Task<IActionResult> Delete(int id)
     if (course == null)
         return NotFound(new { message = "Course not found." });
 
-    // 2️⃣ Remove related modules
+    // Remove related modules
     if (course.Modules.Any())
         _db.Modules.RemoveRange(course.Modules);
 
-    // 3️⃣ Remove related feedbacks
+    // Remove related feedbacks
     var feedbacks = await _db.Feedbacks
         .Where(f => f.CourseId == course.Id)
         .ToListAsync();
     if (feedbacks.Any())
         _db.Feedbacks.RemoveRange(feedbacks);
 
-    // 4️⃣ Remove related notifications (takedown requests)
+    // Remove related notifications (takedown requests)
     var notes = await _db.Notifications
         .Where(n => n.Type == "TakedownRequested" && n.Message.Contains($"'{course.Name}'"))
         .ToListAsync();
     if (notes.Any())
         _db.Notifications.RemoveRange(notes);
 
-    // 5️⃣ Remove the course itself
+    // Remove the course itself
     _db.Courses.Remove(course);
 
-    // 6️⃣ Save all changes in one transaction
+    // Save all changes in one transaction
     await _db.SaveChangesAsync();
 
     return NoContent();
 }
 
 
-
-
-        // ─── Update an existing course (Trainer who owns it) ───────────────────────
-
         [Authorize(Roles = "Trainer")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CourseCreateDTO dto)
         {
-            // 1️⃣ Trainer email from JWT
+            // Trainer email from JWT
             var trainerEmail = User.FindFirst(ClaimTypes.Email)?.Value
                              ?? User.FindFirst("email")?.Value;
             if (string.IsNullOrEmpty(trainerEmail))
                 return Unauthorized(new { message = "Not authorized." });
 
-            // 2️⃣ Load course and ensure it belongs to this trainer
+            // Load course and ensure it belongs to this trainer
             var course = await _db.Courses
                 .Include(c => c.Trainer)
                 .SingleOrDefaultAsync(c => c.Id == id && c.Trainer.Email == trainerEmail);
             if (course == null)
                 return NotFound(new { message = "Course not found or not your own." });
 
-            // 3️⃣ Apply updates
+            //Apply updates
             course.Name = dto.Name;
             course.Type = dto.Type;
             course.Duration = dto.Duration;

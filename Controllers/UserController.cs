@@ -17,7 +17,7 @@ namespace Mini_LMS.Controllers
 
 
 
-        // ✅ Get all users
+   
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
@@ -36,7 +36,7 @@ namespace Mini_LMS.Controllers
             return Ok(users);
         }
 
-        // ✅ Get single user by ID
+   
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
@@ -59,7 +59,7 @@ namespace Mini_LMS.Controllers
             return Ok(user);
         }
 
-        // ✅ Update user (username, email, role, status)
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(
             int id,
@@ -97,7 +97,7 @@ namespace Mini_LMS.Controllers
 [HttpDelete("{id}")]
 public async Task<IActionResult> DeleteUser(int id)
 {
-    // Load user and dependent password resets
+
     var user = await _db.Users
         .Include(u => u.Passwordresets)
         .FirstOrDefaultAsync(u => u.Id == id);
@@ -105,18 +105,18 @@ public async Task<IActionResult> DeleteUser(int id)
     if (user == null)
         return NotFound(new { message = "User not found" });
 
-    // Remove child records first
+
     if (user.Passwordresets.Any())
         _db.Passwordresets.RemoveRange(user.Passwordresets);
 
-    // Now remove the user
+
     _db.Users.Remove(user);
     await _db.SaveChangesAsync();
 
     return Ok(new { message = "User and related resets deleted successfully" });
 }
 
-        // ✅ Toggle active/inactive
+
         [HttpPatch("{id}/toggle")]
         public async Task<IActionResult> ToggleUser(int id)
         {

@@ -17,12 +17,12 @@ namespace MiniLMS.Controllers
             _db = db;
         }
 
-        // ✅ Enroll learner into a course
+        // Enroll learner into a course
         [HttpPost("enroll/{courseId}")]
         [Authorize(Roles = "Learner")]
         public async Task<IActionResult> EnrollInCourse(int courseId)
         {
-            // ◼ Safe claim retrieval
+            // Safe claim retrieval
             var idClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!int.TryParse(idClaim, out var learnerId))
                 return Unauthorized(new { error = "User identifier missing or invalid" });
@@ -45,7 +45,7 @@ namespace MiniLMS.Controllers
             return Ok(new { message = "Enrolled successfully", enrollment });
         }
 
-        // ✅ Get all courses for the logged-in learner
+        // Get all courses for the logged-in learner
         [HttpGet("my-courses")]
         [Authorize(Roles = "Learner")]
         public async Task<IActionResult> GetMyCourses()
@@ -73,7 +73,7 @@ namespace MiniLMS.Controllers
             return Ok(courses);
         }
 
-        // ✅ Get all learners enrolled in a course (Trainer/Admin)
+        // Get all learners enrolled in a course (Trainer/Admin)
         [HttpGet("course/{courseId}")]
         [Authorize(Roles = "Trainer,Admin")]
         public async Task<IActionResult> GetLearnersForCourse(int courseId)
