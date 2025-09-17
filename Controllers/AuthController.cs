@@ -34,7 +34,7 @@ namespace Mini_LMS.Controllers
 
         // ─── ADMIN LOGIN STEP 1: Send OTP ───────────────────────────────
         [HttpPost("login/admin")]
-        [AllowAnonymous]
+    
         public async Task<IActionResult> AdminLogin([FromForm] string email, [FromForm] string password)
         {
             if (email != AdminEmail || password != AdminPassword)
@@ -100,7 +100,7 @@ namespace Mini_LMS.Controllers
                 Email = email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
                 Role = role,
-                IsActive = true,
+                IsActive = false,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -117,8 +117,7 @@ namespace Mini_LMS.Controllers
         public async Task<IActionResult> RequestPasswordReset([FromForm] int userId)
         {
             var user = await _db.Users.FindAsync(userId);
-            if (user == null || !user.IsActive.GetValueOrDefault())
-                return NotFound(new { message = "User not found or inactive." });
+            
 
             var token = Guid.NewGuid().ToString();
             var now = DateTime.UtcNow;
