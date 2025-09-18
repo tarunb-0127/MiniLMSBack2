@@ -1,5 +1,37 @@
 [
   {
+    "ContainingType": "Mini_LMS.Controllers.AnalyticsController",
+    "Method": "GetTrainerAnalytics",
+    "RelativePath": "api/Analytics/trainer/{trainerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "trainerId",
+        "Type": "System.Int64",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Mini_LMS.Controllers.AnalyticsController",
+    "Method": "GetTrainerLearners",
+    "RelativePath": "api/Analytics/trainer/{trainerId}/learners",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "trainerId",
+        "Type": "System.Int64",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Mini_LMS.Controllers.AuthController",
     "Method": "VerifyAdminOtp",
     "RelativePath": "api/auth/admin/verify-otp",
@@ -209,6 +241,22 @@
   },
   {
     "ContainingType": "Mini_LMS.Controllers.CourseController",
+    "Method": "Delete",
+    "RelativePath": "api/Course/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Mini_LMS.Controllers.CourseController",
     "Method": "Update",
     "RelativePath": "api/Course/{id}",
     "HttpMethod": "PUT",
@@ -273,13 +321,13 @@
   {
     "ContainingType": "MiniLMS.Controllers.EnrollmentController",
     "Method": "DropEnrollment",
-    "RelativePath": "api/Enrollment/{id}",
+    "RelativePath": "api/Enrollment/{enrollmentId}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
+        "Name": "enrollmentId",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -338,7 +386,7 @@
     "Parameters": [
       {
         "Name": "LearnerId",
-        "Type": "System.Int64",
+        "Type": "System.Int32",
         "IsRequired": false
       },
       {
@@ -518,6 +566,11 @@
         "Name": "courseId",
         "Type": "System.Int32",
         "IsRequired": true
+      },
+      {
+        "Name": "learnerId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -565,15 +618,109 @@
   },
   {
     "ContainingType": "Mini_LMS.Controllers.NotificationsController",
-    "Method": "MarkAsRead",
-    "RelativePath": "api/Notifications/{id}/read",
-    "HttpMethod": "PATCH",
+    "Method": "DeleteNotification",
+    "RelativePath": "api/Notifications/{id}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Mini_LMS.Controllers.NotificationsController",
+    "Method": "GetTakedowns",
+    "RelativePath": "api/Notifications/takedowns",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Mini_LMS.Controllers.NotificationsController",
+    "Method": "GetTakedownCount",
+    "RelativePath": "api/Notifications/takedowns/count",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Mini_LMS.Controllers.ProgressController",
+    "Method": "CompleteModule",
+    "RelativePath": "api/Progress/complete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Mini_LMS.Controllers.ProgressDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Mini_LMS.Controllers.ProgressController",
+    "Method": "GetCourseProgress",
+    "RelativePath": "api/Progress/course/{courseId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "learnerId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Mini_LMS.Controllers.ProgressController",
+    "Method": "GetModulesProgress",
+    "RelativePath": "api/Progress/modules/{courseId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "learnerId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Mini_LMS.Controllers.ProgressController",
+    "Method": "UpdateModuleProgress",
+    "RelativePath": "api/Progress/update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Mini_LMS.Controllers.ProgressDto",
         "IsRequired": true
       }
     ],

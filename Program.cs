@@ -16,6 +16,26 @@ builder.Services.AddScoped<JwtHelper>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<BlobService>();
 
+// At the top, before AddDbContext
+var isTesting = builder.Environment.IsEnvironment("Testing")
+                || builder.Configuration.GetValue<bool>("UseInMemory");
+
+if (isTesting)
+{
+    builder.Services.AddDbContext<MiniLMSContext>(opts =>
+        opts.UseInMemoryDatabase("MiniLMS_Test"));
+}
+else
+{
+    builder.Services.AddDbContext<MiniLMSContext>(opts =>
+        opts.UseMySql(
+            builder.Configuration.GetConnectionString("Default"),
+            ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("Default"))
+        )
+    );
+}
+
+
 
 builder.Services.AddDbContext<MiniLMSContext>(opts =>
     opts.UseMySql(
@@ -117,7 +137,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // 7?? Middleware pipeline
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

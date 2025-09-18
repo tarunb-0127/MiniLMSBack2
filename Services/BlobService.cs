@@ -23,7 +23,14 @@ public class BlobService
         _containerClient.SetAccessPolicy(PublicAccessType.Blob);
     }
 
-    public async Task<string> UploadAsync(IFormFile file)
+    // new “test-friendly” ctor
+    public BlobService(BlobContainerClient containerClient)
+    {
+        _containerClient = containerClient
+            ?? throw new ArgumentNullException(nameof(containerClient));
+    }
+
+    public virtual async Task<string> UploadAsync(IFormFile file)
     {
 
         var safeFileName = Path.GetFileNameWithoutExtension(file.FileName)

@@ -23,7 +23,8 @@ namespace Mini_LMS.Services
             var username = _config["Email:Username"];
             var password = _config["Email:Password"];
 
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(username) ||
+                string.IsNullOrWhiteSpace(password))
             {
                 _logger.LogError("SMTP credentials are missing or empty.");
                 throw new InvalidOperationException("SMTP credentials not configured.");
@@ -38,7 +39,8 @@ namespace Mini_LMS.Services
             };
         }
 
-        private MailMessage CreateMessage(string toEmail, string subject, string body)
+        // Made protected so a subclass can override if needed
+        protected virtual MailMessage CreateMessage(string toEmail, string subject, string body)
         {
             var fromEmail = _config["Email:Username"];
 
@@ -59,7 +61,8 @@ namespace Mini_LMS.Services
             return message;
         }
 
-        public async Task<bool> SendOtpEmailAsync(string toEmail, string otp)
+        // All public send methods are now virtual
+        public virtual async Task<bool> SendOtpEmailAsync(string toEmail, string otp)
         {
             try
             {
@@ -82,7 +85,7 @@ namespace Mini_LMS.Services
             }
         }
 
-        public async Task<bool> SendPasswordResetEmailAsync(string toEmail, string resetLink)
+        public virtual async Task<bool> SendPasswordResetEmailAsync(string toEmail, string resetLink)
         {
             try
             {
@@ -105,8 +108,7 @@ namespace Mini_LMS.Services
             }
         }
 
-
-        public async Task<bool> SendCourseApprovalEmailAsync(string trainerEmail, string courseName)
+        public virtual async Task<bool> SendCourseApprovalEmailAsync(string trainerEmail, string courseName)
         {
             try
             {
@@ -129,7 +131,7 @@ namespace Mini_LMS.Services
             }
         }
 
-        public async Task<bool> SendCourseUpdateEmailAsync(string trainerEmail, string courseName)
+        public virtual async Task<bool> SendCourseUpdateEmailAsync(string trainerEmail, string courseName)
         {
             try
             {
@@ -147,12 +149,12 @@ namespace Mini_LMS.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "ailed to send course update email to {Email}", trainerEmail);
+                _logger.LogError(ex, "Failed to send course update email to {Email}", trainerEmail);
                 return false;
             }
         }
 
-        public async Task<bool> SendTakedownRequestEmailAsync(string adminEmail, string courseName, string trainerEmail)
+        public virtual async Task<bool> SendTakedownRequestEmailAsync(string adminEmail, string courseName, string trainerEmail)
         {
             try
             {
@@ -175,7 +177,7 @@ namespace Mini_LMS.Services
             }
         }
 
-        public async Task<bool> SendFeedbackNotificationEmailAsync(string trainerEmail, string learnerName, string courseName)
+        public virtual async Task<bool> SendFeedbackNotificationEmailAsync(string trainerEmail, string learnerName, string courseName)
         {
             try
             {
@@ -198,7 +200,7 @@ namespace Mini_LMS.Services
             }
         }
 
-        public async Task<bool> SendNewCourseAvailableEmailAsync(string learnerEmail, string courseName)
+        public virtual async Task<bool> SendNewCourseAvailableEmailAsync(string learnerEmail, string courseName)
         {
             try
             {
@@ -220,6 +222,5 @@ namespace Mini_LMS.Services
                 return false;
             }
         }
-
     }
 }
